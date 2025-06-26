@@ -1,0 +1,6 @@
+build/
+bazel-*/
+external/
+.cache/
+outline.md
+MODULE.bazel.lock
