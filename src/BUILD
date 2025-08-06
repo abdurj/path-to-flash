@@ -9,3 +9,23 @@ cc_binary(
         "@fmt",
     ],
 )
+
+# Example main demonstrating the base attention class
+cc_binary(
+    name = "example_main",
+    srcs = ["example_main.cpp"],
+    deps = [
+        "//src/base:attention_base",
+        "//src/common:matrix_utils",
+        "@fmt",
+    ],
+)
+
+# Test runner for all unit tests
+cc_binary(
+    name = "run_tests",
+    srcs = [],
+    deps = [
+        "//src/base:attention_base_test",
+    ],
+)
