@@ -5,8 +5,6 @@ The project will start out from first principles in naive C++ and the goal is to
 
 This project is both a personal learning tool and a walk-along tutorial. It’s designed to help me (and hopefully others!) deeply understand how attention works at the system level, while also practicing clean, modern, production-quality C++.
 
-Rather than hacking this together privately, I’m building this in public as a structured, readable, and extensible codebase — something anyone can clone, explore, and learn from.
-
 ### Goals
 - Understand Attention: Implement it from first principles using basic CPU code
 - Optimize Performance: Apply SIMD, memory layout tuning, blocking, and cache-friendly operations
@@ -49,18 +47,6 @@ cd path-to-flash
 - phase6/: Flash Attention kernels
 - phase7/: Library integration, tuning, and deployment
 
-## Author
-
-Hi! I'm Abdur, a recent Software Engineering grad (Class of 2025) from the University of Waterloo. I’ve interned across the AI systems stack, working on compilers, training runtimes, model deployment, and low-level optimization. I love low-level software, something that challenges physical real-world limitations, and pushes the boundaries of what hardware is capable of.
-
-As of writing this, I’m about to join the ML Training Runtime team at Tesla, working on their in-house training accelerator Dojo. This project is my way of preparing: building up deep understanding and strong implementation skills through real, performance-critical C++ and CUDA.
-
-I'm developing this project primarily to:
-- Learn by doing
-- Push myself to write clean, testable, modular code
-- Provide a tutorial others can follow, modify, and build on.
-
-If you're getting into ML systems, compilers, or runtime engineering — my goal is to help you in your journey too.
 
 ## Contributing
 This project is a personal challenge to grow as a software engineer. I'm using it to deepen my understanding of attention mechanisms, systems optimization, and modern C++ design.

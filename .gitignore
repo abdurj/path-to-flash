@@ -1,6 +1,7 @@
 build/
-bazel-*/
+bazel-*
 external/
+.github/
 .cache/
 outline.md
 MODULE.bazel.lock
