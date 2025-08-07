@@ -7,7 +7,7 @@
 #include <functional>
 #include <string_view>
 
-namespace p2f {
+namespace ptflash {
 
 /// @brief Result of a benchmark
 struct BenchmarkResult {
@@ -43,4 +43,4 @@ public:
   }
 };
 
-} // namespace p2f
+} // namespace ptflash

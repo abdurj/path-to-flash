@@ -1,10 +1,10 @@
 # Base Attention Architecture
 
-This directory contains the foundational `AttentionBase` class that defines the common interface for all attention implementations throughout the project.
+This directory contains the foundational `Attention` class that defines the common interface for all attention implementations throughout the project.
 
 ## Overview
 
-The `AttentionBase` class serves as an abstract base class that all attention phases will inherit from. This design provides:
+The `Attention` class serves as an abstract base class that all attention phases will inherit from. This design provides:
 
 1. **Consistent Interface**: All implementations (naive CPU, optimized CPU, CUDA, Flash Attention) use the same API
 2. **Built-in Validation**: Input validation and parameter checking are handled at the base level using `absl::StatusOr`
@@ -13,7 +13,7 @@ The `AttentionBase` class serves as an abstract base class that all attention ph
 
 ## Key Components
 
-### `AttentionBase` Class
+### `Attention` Class
 
 The abstract base class defines:
 
@@ -101,8 +101,8 @@ bazel test //src/base:attention_base_test
 
 When creating new attention phases:
 
-1. **Inherit from `AttentionBase`**
-2. **Implement a static `Create` method for construction**
+1. **Inherit from `Attention`**
+2. **Use `CreateValidated<YourClass>()` in your static `Create` method**
 3. **Implement all pure virtual methods**
 4. **Use `ValidateInput()` in your `Forward()` method**
 5. **Return `absl::StatusOr` for all operations that can fail**
@@ -112,18 +112,12 @@ When creating new attention phases:
 Example skeleton:
 
 ```cpp
-class Phase1Attention : public AttentionBase {
+class Phase1Attention : public Attention {
 public:
     static absl::StatusOr<std::unique_ptr<Phase1Attention>> Create(
         int seq_len, int d_model, int num_heads) {
-        
-        auto base_result = AttentionBase::Create(seq_len, d_model, num_heads);
-        if (!base_result.ok()) {
-            return base_result.status();
-        }
-        
-        return std::unique_ptr<Phase1Attention>(
-            new Phase1Attention(seq_len, d_model, num_heads));
+        // All validation is handled in the base class!
+        return CreateValidated<Phase1Attention>(seq_len, d_model, num_heads);
     }
     
     absl::StatusOr<std::vector<float>> Forward(const std::vector<float>& input) override {
@@ -147,8 +141,9 @@ public:
     std::string Name() const override { return "Phase1NaiveAttention"; }
 
 private:
+    friend class Attention;  // Allow base class to access private constructor
     Phase1Attention(int seq_len, int d_model, int num_heads)
-        : AttentionBase(seq_len, d_model, num_heads) {}
+        : Attention(seq_len, d_model, num_heads) {}
 };
 ```
 

@@ -5,7 +5,7 @@
 
 #include <type_traits>
 #include <vector>
-namespace p2f {
+namespace ptflash {
 
 // Simple concept for numeric types
 template <typename T>
@@ -61,4 +61,4 @@ public:
   }
 };
 
-} // namespace p2f
+} // namespace ptflash

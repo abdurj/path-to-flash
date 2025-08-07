@@ -1,7 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
-    name = "attention_base",
+    name = "attention",
     srcs = ["attention_base.cpp"],
     hdrs = ["attention_base.hpp"],
     deps = [
@@ -15,9 +15,9 @@ cc_test(
     name = "attention_base_test",
     srcs = ["attention_base_test.cpp"],
     deps = [
-        ":attention_base",
+        ":attention",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
-        "@fmt",
+        "@abseil-cpp//absl/log:check",
     ],
 )

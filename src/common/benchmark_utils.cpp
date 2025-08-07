@@ -1,7 +1,7 @@
 #include "benchmark_utils.hpp"
 #include <chrono>
 
-namespace p2f {
+namespace ptflash {
 
 void BenchmarkResult::print(const std::string_view &name) const {
   fmt::print("{}: {:.2f} ms", name, time_ms);
@@ -34,4 +34,4 @@ SimpleBenchmark::time_function(const std::function<void()> &func,
   return {time_ms, gflops};
 }
 
-} // namespace p2f
+} // namespace ptflash

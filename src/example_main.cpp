@@ -3,22 +3,14 @@
 #include <fmt/format.h>
 #include <memory>
 
-using namespace p2f;
+using namespace ptflash;
 
 // Example implementation that will be replaced with real phases later
-class ExampleAttention : public AttentionBase {
+class ExampleAttention : public Attention {
 public:
     static absl::StatusOr<std::unique_ptr<ExampleAttention>> Create(
         int seq_len, int d_model, int num_heads) {
-        
-        // Use base class validation
-        auto base_result = AttentionBase::Create(seq_len, d_model, num_heads);
-        if (!base_result.ok()) {
-            return base_result.status();
-        }
-        
-        return std::unique_ptr<ExampleAttention>(
-            new ExampleAttention(seq_len, d_model, num_heads));
+        return CreateValidated<ExampleAttention>(seq_len, d_model, num_heads);
     }
     
     absl::StatusOr<std::vector<float>> Forward(const std::vector<float>& input) override {
@@ -62,8 +54,9 @@ public:
     }
 
 private:
+    friend class Attention;  // Allow base class to access private constructor
     ExampleAttention(int seq_len, int d_model, int num_heads)
-        : AttentionBase(seq_len, d_model, num_heads) {}
+        : Attention(seq_len, d_model, num_heads) {}
 };
 
 int main() {

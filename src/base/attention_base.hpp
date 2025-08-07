@@ -3,8 +3,9 @@
 #include <vector>
 #include <memory>
 #include "absl/status/statusor.h"
+#include "absl/strings/str_format.h"
 
-namespace p2f {
+namespace ptflash {
 
 /**
  * Abstract base class for all attention implementations.
@@ -16,28 +17,17 @@ namespace p2f {
  * The interface is designed to be simple and consistent across all phases while
  * allowing for performance measurement and correctness verification.
  */
-class AttentionBase {
+class Attention {
 public:
-    /**
-     * Constructor for attention mechanism.
-     * 
-     * @param seq_len Sequence length (number of tokens)
-     * @param d_model Model dimension (embedding size)
-     * @param num_heads Number of attention heads
-     * @return StatusOr containing the constructed object or error status
-     */
-    static absl::StatusOr<std::unique_ptr<AttentionBase>> Create(
-        int seq_len, int d_model, int num_heads);
-    
-    virtual ~AttentionBase() = default;
+    virtual ~Attention() = default;
     
     // Delete copy constructor and assignment operator
-    AttentionBase(const AttentionBase&) = delete;
-    AttentionBase& operator=(const AttentionBase&) = delete;
+    Attention(const Attention&) = delete;
+    Attention& operator=(const Attention&) = delete;
     
     // Allow move operations
-    AttentionBase(AttentionBase&&) = default;
-    AttentionBase& operator=(AttentionBase&&) = default;
+    Attention(Attention&&) = default;
+    Attention& operator=(Attention&&) = delete;
 
     /**
      * Forward pass through attention mechanism.
@@ -74,12 +64,46 @@ protected:
     /**
      * Protected constructor for derived classes.
      */
-    AttentionBase(int seq_len, int d_model, int num_heads);
+    Attention(int seq_len, int d_model, int num_heads);
     
     /**
      * Validate input dimensions (accessible to derived classes).
      */
     absl::Status ValidateInput(const std::vector<float>& input) const;
+    
+    /**
+     * Validate construction parameters and create instance of derived class.
+     * This handles all parameter validation in one place.
+     */
+    template<typename DerivedType>
+    static absl::StatusOr<std::unique_ptr<DerivedType>> Create(
+        int seq_len, int d_model, int num_heads) {
+        
+        // Validate constructor parameters
+        if (seq_len <= 0) {
+            return absl::InvalidArgumentError(
+                absl::StrFormat("seq_len must be positive, got %d", seq_len));
+        }
+        
+        if (d_model <= 0) {
+            return absl::InvalidArgumentError(
+                absl::StrFormat("d_model must be positive, got %d", d_model));
+        }
+        
+        if (num_heads <= 0) {
+            return absl::InvalidArgumentError(
+                absl::StrFormat("num_heads must be positive, got %d", num_heads));
+        }
+        
+        if (d_model % num_heads != 0) {
+            return absl::InvalidArgumentError(
+                absl::StrFormat("d_model (%d) must be divisible by num_heads (%d)", 
+                               d_model, num_heads));
+        }
+        
+        return std::unique_ptr<DerivedType>(
+            new DerivedType(seq_len, d_model, num_heads));
+    }
 
 private:
     const int seq_len_;
@@ -88,4 +112,4 @@ private:
     const int head_dim_;
 };
 
-}  // namespace p2f
+}  // namespace ptflash

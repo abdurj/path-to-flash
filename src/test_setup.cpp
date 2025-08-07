@@ -2,7 +2,7 @@
 #include "common/matrix_utils.hpp"
 #include "fmt/format.h"
 
-using namespace p2f;
+using namespace ptflash;
 
 int main(int argc, char **argv) {
   fmt::print("Testing Path to Flash Setup!\n");

@@ -15,7 +15,7 @@ cc_binary(
     name = "example_main",
     srcs = ["example_main.cpp"],
     deps = [
-        "//src/base:attention_base",
+        "//src/base:attention",
         "//src/common:matrix_utils",
         "@fmt",
     ],
