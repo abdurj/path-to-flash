@@ -20,3 +20,8 @@ cc_library(
         "@fmt",
     ],
 )
+
+cc_library(
+    name = "macros",
+    hdrs = ["macros.hpp"],
+)

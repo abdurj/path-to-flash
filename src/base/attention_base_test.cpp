@@ -9,7 +9,7 @@ class MockAttention : public Attention {
 public:
     static absl::StatusOr<std::unique_ptr<MockAttention>> Create(
         int seq_len, int d_model, int num_heads) {
-        return CreateValidated<MockAttention>(seq_len, d_model, num_heads);
+        return Attention::Create<MockAttention>(seq_len, d_model, num_heads);
     }
     
     absl::StatusOr<std::vector<float>> Forward(const std::vector<float>& input) override {
